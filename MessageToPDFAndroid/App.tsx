@@ -1,9 +1,10 @@
 
 import React, {useEffect, useCallback, useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SectionList, Alert, PermissionsAndroid} from 'react-native';
-import { getDBConnection} from './ds-service';
+import { getDBConnection} from './dService';
 import { Dropdown } from 'react-native-element-dropdown';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import FileViewer from "react-native-file-viewer";
 
 
 const App: React.FC = (): JSX.Element => {
@@ -54,12 +55,15 @@ const App: React.FC = (): JSX.Element => {
     const htmlContent = `
       <html>
         <body>
-          <h1>PDF Report for Address: ${selectedValue}</h1>
+          <h1>PDF Report for Number: ${selectedValue}</h1>
           ${filteredData.map(entry => `
             <div>
               <p><strong>_id:</strong> ${entry._id}</p>
-              <p><strong>address:</strong> ${entry.address}</p>
+              <p><strong>Phone Numebr:</strong> ${entry.address}</p>
               <p><strong>body:</strong> ${entry.body}</p>
+              <p><strong>Send:</strong> ${entry.send}</p>
+              <p><strong>Thread Id:</strong> ${entry.thread_id}</p>
+              <p><strong>Date Sent:</strong> ${entry.data_sent}</p>
               <!-- Add other fields as needed -->
             </div>
           `).join('')}
@@ -67,55 +71,41 @@ const App: React.FC = (): JSX.Element => {
       </html>
     `;
 
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      {
-        title: 'Storage Permission',
-        message: 'App needs access to your storage to save the PDF.',
-        buttonNeutral: 'Ask Me Later',
-        buttonNegative: 'Cancel',
-        buttonPositive: 'OK',
-      },
-    );
+    let fileName = `report_${selectedValue}`;
 
     var options = {
       html: htmlContent,
-      fileName: 'report',
+      fileName: fileName,
       directory: 'Download'
     };
-  
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      // Permission granted, proceed with generating and saving PDF
-      options = {
-        html: htmlContent,
-        fileName: 'yes',
-        directory: 'Download', // Change this to the desired directory
-      };
-    }
 
     const file = await RNHTMLtoPDF.convert(options);
     console.log(file.filePath); // This will give you the path to the generated PDF file
     if(file.filePath){
-      Alert.alert("File Location Here:" + file.filePath);
+      Alert.alert("Successfully Exported", "Path:" + file.filePath, [
+        {text: 'Cancel', style: 'cancel'},
+        {text: 'Open', onPress: () => openPDF(file.filePath)}
+      ], {cancelable: true});
     }
-    
   };
+
+  const openPDF = (filepath: any) =>{
+    const path = filepath
+    FileViewer.open(path) // absolute-path-to-my-local-file.
+    .then(() => {
+      console.log("PDF Showing");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
 
   const dropdownData = jsonContent.map(entry => ({
     label: entry.address,
     value: entry.address,
   }));
 
-  const data = [
-    { label: 'Item 1', value: '1' },
-    { label: 'Item 2', value: '2' },
-    { label: 'Item 3', value: '3' },
-    { label: 'Item 4', value: '4' },
-    { label: 'Item 5', value: '5' },
-    { label: 'Item 6', value: '6' },
-    { label: 'Item 7', value: '7' },
-    { label: 'Item 8', value: '8' },
-  ];
 
   const handleButtonClick = () => {
     console.log("Start");

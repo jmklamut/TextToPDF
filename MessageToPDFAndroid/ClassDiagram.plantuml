@@ -1,0 +1,22 @@
+@startuml "Textidence Class Diagram"
+
+class App {
+    jsonContent : useState
+    selectededValue: useState
+    dropdownData: const
+    style: const
+    useEffect()
+    generatePDF()
+    handleButtonClick()
+    return()
+    create()
+}
+
+class dService{
+    enablePromise()
+    getDBConnection()
+}
+
+App <-- dService
+
+@enduml
