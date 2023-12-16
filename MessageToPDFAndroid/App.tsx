@@ -61,7 +61,7 @@ const App: React.FC = (): JSX.Element => {
               <p><strong>_id:</strong> ${entry._id}</p>
               <p><strong>Phone Numebr:</strong> ${entry.address}</p>
               <p><strong>body:</strong> ${entry.body}</p>
-              <p><strong>Send:</strong> ${entry.send}</p>
+              <p><strong>Seen:</strong> ${entry.seen}</p>
               <p><strong>Thread Id:</strong> ${entry.thread_id}</p>
               <p><strong>Date Sent:</strong> ${entry.data_sent}</p>
               <!-- Add other fields as needed -->
