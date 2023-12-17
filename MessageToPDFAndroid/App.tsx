@@ -1,6 +1,6 @@
 
-import React, {useEffect, useCallback, useState} from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SectionList, Alert, PermissionsAndroid} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert} from 'react-native';
 import { getDBConnection} from './dService';
 import { Dropdown } from 'react-native-element-dropdown';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -18,7 +18,6 @@ const App: React.FC = (): JSX.Element => {
         const db = await getDBConnection();
 
         const smsEntries: any[] = [];
-
         db.transaction(tx => {
           tx.executeSql(
             'SELECT * FROM sms',
@@ -73,13 +72,14 @@ const App: React.FC = (): JSX.Element => {
 
     let fileName = `report_${selectedValue}`;
 
-    var options = {
-      html: htmlContent,
-      fileName: fileName,
-      directory: 'Download'
-    };
+  var options = {
+    html: htmlContent,
+    fileName: fileName,
+    directory: 'Download'
+  };
 
     const file = await RNHTMLtoPDF.convert(options);
+
     console.log(file.filePath); // This will give you the path to the generated PDF file
     if(file.filePath){
       Alert.alert("Successfully Exported", "Path:" + file.filePath, [
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     height: 10,
     width: 200,
     borderBottomColor: 'gray',
-    borderBottomWidth: 0.5,
+    borderBottomWidth: 3,
     zIndex: 10,
     padding: 20,
     position: 'absolute',
@@ -226,13 +226,13 @@ const styles = StyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 40,
     marginLeft: 25,
     position: 'absolute'
   },
   selectedTextStyle: {
     fontSize: 16,
-    marginBottom: 30,
+    marginBottom: 40,
     marginLeft: 25,
     position: 'absolute'
   },

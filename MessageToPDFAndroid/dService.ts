@@ -1,4 +1,4 @@
-import { enablePromise, openDatabase, SQLiteDatabase } from 'react-native-sqlite-storage';
+import { enablePromise, openDatabase} from 'react-native-sqlite-storage';
 //import android.database.sqlite.SQLiteDatabase;
 
 enablePromise(true);
