@@ -5,7 +5,7 @@ Inside the Wiki you will find the following documentation:
 - Home
 - Coding Standards
 - Defect Tracking Log and Policy
-- Final Project Report
+- Project Report
 - Interaction Diagram
 - Persona
 - Software Requirement Specification for Textidence
